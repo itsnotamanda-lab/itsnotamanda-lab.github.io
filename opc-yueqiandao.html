@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OPC跃迁岛 · 岛民养成体系</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { min-height: 100%; }
+    body { background: #060d1a; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    .level-card { transition: transform .25s, box-shadow .25s; }
+    .level-card:hover { transform: translateY(-3px); }
+    .badge-card { transition: transform .2s; cursor: default; }
+    .badge-card:hover { transform: scale(1.03); }
+    button { font-family: inherit; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #060d1a; }
+    ::-webkit-scrollbar-thumb { background: #1a3356; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    const c = {
+      bg: "#060d1a", deep: "#091425", surface: "#0d1e35",
+      card: "#102340", border: "#1a3356",
+      cyan: "#00e5ff", teal: "#00b4d8", gold: "#ffb700",
+      coral: "#ff6b6b", green: "#00e096", purple: "#a855f7",
+      text: "#e8f4ff", muted: "#5b8ab0",
+    };
+
+    const LEVELS = [
+      {
+        id:1, name:"探索者", en:"Explorer", icon:"🧭",
+        color:c.teal, gradFrom:"#00b4d8", gradTo:"#0077b6",
+        training:"入门营", layer:"认知层",
+        desc:"新用户阶段，完成入门学习，开启跃迁旅程",
+        trainingDesc:"建立OPC和AI基本认知，解析商业模式与工具应用",
+        perks:["访问公开课程库","加入跃迁岛社群","参与线下活动旁听","基础AI工具使用指南","每日OPC早报订阅"],
+        unlock:"注册即可",
+      },
+      {
+        id:2, name:"建造者", en:"Builder", icon:"🏗️",
+        color:c.cyan, gradFrom:"#00e5ff", gradTo:"#00b4d8",
+        training:"实战营", layer:"技能层",
+        desc:"掌握AI+商业技能，开始构建自己的OPC",
+        trainingDesc:"掌握核心技能，精通AI内容创作、获客策略与交付",
+        perks:["解锁实战营课程","AI工具专属折扣","参与城市OPC沙龙","项目需求发布权限","1位导师匹配资格"],
+        unlock:"累积 500 OPCoin",
+      },
+      {
+        id:3, name:"领航员", en:"Navigator", icon:"🚀",
+        color:c.gold, gradFrom:"#ffb700", gradTo:"#f07800",
+        training:"精英营", layer:"商业层",
+        desc:"实现商业变现，成为社区意见领袖",
+        trainingDesc:"实现商业变现与规模化，涉及品牌化、财税与融资",
+        perks:["精英营独家课程","优先资源对接权","快闪办公室使用（月20h）","参与线下集训营","社区KOL标识展示","积分加速×1.5"],
+        unlock:"累积 2000 OPCoin",
+      },
+      {
+        id:4, name:"岛主", en:"Island Master", icon:"🏝️",
+        color:c.gold, gradFrom:"#ffb700", gradTo:"#a855f7",
+        training:"导师营", layer:"生态层",
+        desc:"项目成熟/认证导师，深度参与社区共建",
+        trainingDesc:"成为社区共建者，参与社群运营与课程设计，共享收益",
+        perks:["岛主理事会席位","课程共创收益分成","社区运营决策参与","跨城市资源网络访问","参与对外品牌合作","孵化项目优先推荐","专属OPC毕业礼荣誉"],
+        unlock:"累积 6000 OPCoin + 认证审核",
+      },
+    ];
+
+    const COIN_SOURCES = [
+      { cat:"知识贡献", icon:"📝", color:c.cyan, items:[
+        { act:"发表洞察文章被跃迁岛收纳", coin:200, note:"审核通过后" },
+        { act:"主持专题分享会", coin:300, note:"活动结束后" },
+        { act:"录制行业课程", coin:600, note:"上线后结算" },
+      ]},
+      { cat:"社区活动", icon:"🎯", color:c.coral, items:[
+        { act:"参与线下活动签到", coin:100, note:"每次活动" },
+        { act:"担任活动志愿者", coin:350, note:"每次" },
+        { act:"线上话题互动（获赞）", coin:50, note:"每10个赞" },
+        { act:"完成每月挑战任务", coin:400, note:"每月1次" },
+      ]},
+      { cat:"网络连接", icon:"🔗", color:c.green, items:[
+        { act:"成功促进岛民落地合作", coin:800, note:"合作落地后" },
+        { act:"推荐新岛民成功入驻", coin:300, note:"新岛民激活后" },
+        { act:"参与跨界项目对接", coin:150, note:"每次参与" },
+        { act:"精准匹配资源需求", coin:400, note:"匹配成功后" },
+      ]},
+      { cat:"价值创造", icon:"💎", color:c.purple, items:[
+        { act:"牵头完成岛上（产业园）重点项目", coin:2000, note:"项目验收后" },
+        { act:"引入外部战略资源", coin:1500, note:"资源落地后" },
+        { act:"引入成熟企业入驻", coin:2000, note:"入驻确认后" },
+        { act:"参与岛上课题研究", coin:800, note:"成果发布后" },
+      ]},
+    ];
+
+    const COIN_SPEND = [
+      { item:"OPC跃迁岛快闪办公室（1个月使用权）", coin:1000, icon:"🏢" },
+      { item:"城市OPC沙龙优先席位", coin:200, icon:"🌆" },
+      { item:"线下集训营报名费抵扣", coin:500, icon:"⚡" },
+      { item:"一对一导师咨询（1小时）", coin:800, icon:"🎓" },
+      { item:"更多权益兑换陆续上线中…", coin:null, icon:"✨" },
+    ];
+
+    const BADGES = [
+      { icon:"✍️", name:"AI文案大师", desc:"发表3篇被收纳的洞察文章", rarity:"稀有", color:c.cyan },
+      { icon:"🌐", name:"超级连接者", desc:"单季度促成5+岛民合作落地", rarity:"史诗", color:c.purple },
+      { icon:"🔥", name:"冷启动先锋", desc:"首批加入跃迁岛的100位岛民", rarity:"限定", color:c.coral },
+      { icon:"💡", name:"思想领袖", desc:"线上话题累计获赞500+", rarity:"稀有", color:c.gold },
+      { icon:"🏛️", name:"生态建筑师", desc:"连续6个月保持领航员等级", rarity:"传说", color:c.gold },
+      { icon:"🚀", name:"变现先行者", desc:"首位在社区公开分享OPC变现案例", rarity:"史诗", color:c.green },
+    ];
+
+    const OPS = [
+      { phase:"内容破圈", icon:"📡", color:c.cyan, items:["公域批量产出OPC内容","吸引精准目标关注","资料/直播课钩子引导"] },
+      { phase:"私域沉淀", icon:"🏠", color:c.teal, items:["引导至平台社群","初步筛选与培育","建立信任关系"] },
+      { phase:"种子筛选", icon:"🌱", color:c.green, items:["任务互动筛选高意愿用户","组建核心内测群","深度陪跑服务"] },
+      { phase:"裂变增长", icon:"⚡", color:c.gold, items:["口碑传播机制","邀请解锁进阶课","实现用户自增长"] },
+    ];
+
+    const BIZMODES = [
+      { name:"培训付费", tag:"核心", icon:"🎓", color:c.cyan, desc:"阶梯式课程与会员订阅，满足不同学习需求，是社区核心收入来源。" },
+      { name:"工具付费", tag:"增值", icon:"🛠️", color:c.green, desc:"与第三方AI工具合作提供专属折扣，或开发社区SaaS平台增值服务。" },
+      { name:"资源付费", tag:"生态", icon:"🤝", color:c.gold, desc:"为企业和OPC牵线搭桥收取佣金，或对优质项目投资并进行营收分成。" },
+      { name:"品牌合作", tag:"衍生", icon:"✨", color:c.purple, desc:"通过IP周边、活动冠名等方式，实现品牌价值的衍生变现，拓展商业边界。" },
+    ];
+
+    const TABS = ["四阶成长路径","OPCoin 体系","荣誉激励系统","运营生态图谱"];
+
+    function App() {
+      const [tab, setTab] = useState(0);
+      const [selLevel, setSelLevel] = useState(null);
+
+      return (
+        <div style={{ minHeight:"100vh", background:c.bg, color:c.text, fontFamily:"'Noto Sans SC','DM Sans',system-ui,sans-serif" }}>
+
+          {/* HERO */}
+          <div style={{ position:"relative", overflow:"hidden", background:"linear-gradient(160deg,#060d1a 0%,#091e3a 60%,#060d1a 100%)", borderBottom:`1px solid ${c.border}`, padding:"36px 44px 0" }}>
+            <div style={{ position:"absolute", inset:0, opacity:.035, backgroundImage:`linear-gradient(${c.cyan} 1px,transparent 1px),linear-gradient(90deg,${c.cyan} 1px,transparent 1px)`, backgroundSize:"44px 44px" }}/>
+            <div style={{ position:"absolute", top:-80, left:"20%", width:500, height:300, borderRadius:"50%", background:`radial-gradient(ellipse,${c.cyan}18 0%,transparent 70%)`, pointerEvents:"none" }}/>
+            <div style={{ position:"absolute", top:-40, right:"15%", width:300, height:200, borderRadius:"50%", background:`radial-gradient(ellipse,${c.gold}12 0%,transparent 70%)`, pointerEvents:"none" }}/>
+            <div style={{ position:"relative" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
+                <div style={{ padding:"4px 14px", borderRadius:20, background:`${c.cyan}18`, border:`1px solid ${c.cyan}44`, fontSize:12, fontWeight:700, color:c.cyan, letterSpacing:3 }}>OPC COMMUNITY · 跃迁岛</div>
+                <div style={{ fontSize:12, color:c.muted }}>AGI时代超级个体孵化生态</div>
+              </div>
+              <h1 style={{ fontSize:42, fontWeight:900, margin:"0 0 10px", letterSpacing:-1, background:`linear-gradient(135deg,#fff 20%,${c.cyan} 70%,${c.gold} 100%)`, WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>OPC 跃迁岛 · 岛民养成体系</h1>
+              <p style={{ color:c.muted, fontSize:15, margin:"0 0 8px" }}>
+                <span style={{ color:c.cyan, fontWeight:600 }}>一人，一AI，一生态，自成一家公司</span>　｜　华合广计（北京）信息科技有限公司
+              </p>
+              <div style={{ display:"flex", gap:36, margin:"20px 0 0" }}>
+                {[{v:"4 阶",l:"岛民等级"},{v:"OPCoin",l:"社区货币"},{v:"4 维",l:"积分来源"},{v:"游戏化",l:"荣誉体系"}].map(s=>(
+                  <div key={s.l}><div style={{ fontSize:22, fontWeight:800, color:c.cyan }}>{s.v}</div><div style={{ fontSize:11, color:c.muted, marginTop:2 }}>{s.l}</div></div>
+                ))}
+              </div>
+              <div style={{ display:"flex", marginTop:24, borderTop:`1px solid ${c.border}` }}>
+                {TABS.map((t,i)=>(
+                  <button key={t} onClick={()=>{ setTab(i); setSelLevel(null); }} style={{ padding:"14px 22px", background:"none", border:"none", borderBottom:tab===i?`2px solid ${c.cyan}`:"2px solid transparent", color:tab===i?c.cyan:c.muted, fontSize:13, fontWeight:600, cursor:"pointer", transition:"all .2s" }}>{t}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ padding:"32px 44px" }}>
+
+            {/* TAB 0 */}
+            {tab===0 && (
+              <div style={{ animation:"fadeUp .3s ease" }}>
+                <div style={{ marginBottom:20 }}>
+                  <h2 style={{ margin:"0 0 4px", fontSize:19, fontWeight:800 }}>从探索者到岛主 · 四阶跃迁路径</h2>
+                  <p style={{ margin:0, color:c.muted, fontSize:13 }}>每个成长阶段对应专属培训营、岛民权益与OPCoin解锁门槛</p>
+                </div>
+                <div style={{ display:"flex", gap:12, marginBottom:28 }}>
+                  {LEVELS.map((lv,i)=>(
+                    <div key={lv.id} style={{ flex:1 }}>
+                      <button className="level-card" onClick={()=>setSelLevel(selLevel===i?null:i)} style={{ width:"100%", cursor:"pointer", background:selLevel===i?`linear-gradient(135deg,${lv.gradFrom}28,${lv.gradTo}14)`:c.card, border:`1.5px solid ${selLevel===i?lv.color:c.border}`, borderRadius:20, padding:"20px 14px 16px", textAlign:"center", transition:"all .25s", boxShadow:selLevel===i?`0 4px 24px ${lv.color}28`:"none" }}>
+                        <div style={{ width:28, height:28, borderRadius:8, margin:"0 auto 12px", background:`linear-gradient(135deg,${lv.gradFrom},${lv.gradTo})`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:900, color:"#fff" }}>0{lv.id}</div>
+                        <div style={{ fontSize:26, marginBottom:8 }}>{lv.icon}</div>
+                        <div style={{ fontSize:17, fontWeight:800, color:c.text, marginBottom:3 }}>{lv.name}</div>
+                        <div style={{ fontSize:10, color:lv.color, letterSpacing:2, fontWeight:700, marginBottom:10 }}>{lv.en.toUpperCase()}</div>
+                        <div style={{ padding:"3px 10px", borderRadius:12, display:"inline-block", background:`${lv.color}18`, border:`1px solid ${lv.color}44`, fontSize:11, color:lv.color, fontWeight:700, marginBottom:8 }}>{lv.training} · {lv.layer}</div>
+                        <div style={{ fontSize:11, color:c.muted, lineHeight:1.5 }}>{lv.desc}</div>
+                        <div style={{ marginTop:12, padding:"4px 10px", borderRadius:10, background:`${c.gold}10`, border:`1px solid ${c.gold}22`, fontSize:11, color:c.gold }}>🔓 {lv.unlock}</div>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                {selLevel!==null && (
+                  <div style={{ background:`linear-gradient(135deg,${LEVELS[selLevel].gradFrom}12,${LEVELS[selLevel].gradTo}08)`, border:`1px solid ${LEVELS[selLevel].color}44`, borderRadius:20, padding:28, animation:"fadeUp .2s ease", boxShadow:`0 0 40px ${LEVELS[selLevel].color}14` }}>
+                    <div style={{ display:"flex", gap:20, alignItems:"flex-start" }}>
+                      <div style={{ width:68, height:68, borderRadius:16, flexShrink:0, background:`linear-gradient(135deg,${LEVELS[selLevel].gradFrom}44,${LEVELS[selLevel].gradTo}22)`, border:`2px solid ${LEVELS[selLevel].color}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:32 }}>{LEVELS[selLevel].icon}</div>
+                      <div style={{ flex:1 }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
+                          <h3 style={{ margin:0, fontSize:22, fontWeight:900 }}>Lv.{selLevel+1} · {LEVELS[selLevel].name}</h3>
+                          <span style={{ padding:"2px 10px", borderRadius:12, fontSize:11, fontWeight:700, background:`${LEVELS[selLevel].color}22`, color:LEVELS[selLevel].color, border:`1px solid ${LEVELS[selLevel].color}44` }}>{LEVELS[selLevel].training}</span>
+                        </div>
+                        <p style={{ color:c.muted, fontSize:13, margin:"0 0 6px", lineHeight:1.6 }}>{LEVELS[selLevel].desc}</p>
+                        <p style={{ color:LEVELS[selLevel].color, fontSize:13, margin:"0 0 18px", lineHeight:1.6 }}>📚 {LEVELS[selLevel].trainingDesc}</p>
+                        <div style={{ fontSize:12, fontWeight:700, color:c.muted, marginBottom:10, letterSpacing:1, textTransform:"uppercase" }}>专属岛民权益</div>
+                        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))", gap:8 }}>
+                          {LEVELS[selLevel].perks.map((p,pi)=>(
+                            <div key={pi} style={{ display:"flex", alignItems:"center", gap:8, padding:"8px 12px", borderRadius:10, background:`${LEVELS[selLevel].color}0d`, border:`1px solid ${LEVELS[selLevel].color}22` }}>
+                              <div style={{ width:5, height:5, borderRadius:"50%", background:LEVELS[selLevel].color, flexShrink:0 }}/>
+                              <span style={{ fontSize:13 }}>{p}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {selLevel===null && <div style={{ textAlign:"center", color:c.muted, fontSize:13, paddingTop:8 }}>↑ 点击任意等级卡片，查看详细权益与培训内容</div>}
+              </div>
+            )}
+
+            {/* TAB 1 */}
+            {tab===1 && (
+              <div style={{ animation:"fadeUp .3s ease" }}>
+                <div style={{ marginBottom:20 }}>
+                  <h2 style={{ margin:"0 0 4px", fontSize:19, fontWeight:800 }}>OPCoin · 岛民社区货币体系</h2>
+                  <p style={{ margin:0, color:c.muted, fontSize:13 }}>通过贡献行为获取 OPCoin，用于解锁等级权益与特权兑换</p>
+                </div>
+                <div style={{ marginBottom:10, fontSize:14, fontWeight:700, color:c.cyan, letterSpacing:1 }}>⬆ 积分获取 · 四大维度</div>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:28 }}>
+                  {COIN_SOURCES.map(src=>(
+                    <div key={src.cat} style={{ background:c.card, borderRadius:18, overflow:"hidden", border:`1px solid ${c.border}` }}>
+                      <div style={{ padding:"16px 22px 12px", background:`linear-gradient(135deg,${src.color}14,transparent)`, borderBottom:`1px solid ${c.border}`, display:"flex", alignItems:"center", gap:10 }}>
+                        <span style={{ fontSize:20 }}>{src.icon}</span>
+                        <div>
+                          <div style={{ fontWeight:800, fontSize:15 }}>{src.cat}</div>
+                          <div style={{ width:36, height:2, background:src.color, marginTop:3, borderRadius:2 }}/>
+                        </div>
+                      </div>
+                      {src.items.map((item,i)=>(
+                        <div key={i} style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"11px 22px", borderBottom:i<src.items.length-1?`1px solid ${c.border}44`:"none" }}>
+                          <div>
+                            <div style={{ fontSize:13, fontWeight:500 }}>{item.act}</div>
+                            <div style={{ fontSize:11, color:c.muted }}>{item.note}</div>
+                          </div>
+                          <div style={{ padding:"3px 12px", borderRadius:20, background:`${src.color}22`, color:src.color, fontWeight:800, fontSize:13, border:`1px solid ${src.color}44`, flexShrink:0, marginLeft:10 }}>+{item.coin}</div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+                <div style={{ padding:20, borderRadius:16, marginBottom:28, background:`${c.gold}0a`, border:`1px solid ${c.gold}33` }}>
+                  <div style={{ fontSize:14, fontWeight:700, color:c.gold, marginBottom:12 }}>⚡ 积分加速机制（即将上线）</div>
+                  <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
+                    {[{name:"连续活跃奖励",desc:"连续30天有贡献行为",x:"×1.5"},{name:"跨界协作加成",desc:"跨行业合作项目额外加权",x:"×1.3"},{name:"岛民推荐官",desc:"累计成功引荐5+新岛民",x:"×1.2"}].map(m=>(
+                      <div key={m.name} style={{ flex:1, minWidth:180, padding:"12px 16px", borderRadius:12, background:`${c.gold}0d`, border:`1px solid ${c.gold}22`, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                        <div>
+                          <div style={{ fontSize:13, fontWeight:700 }}>{m.name}</div>
+                          <div style={{ fontSize:11, color:c.muted, marginTop:2 }}>{m.desc}</div>
+                        </div>
+                        <div style={{ fontSize:22, fontWeight:900, color:c.gold, marginLeft:12 }}>{m.x}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ marginBottom:10, fontSize:14, fontWeight:700, color:c.coral, letterSpacing:1 }}>⬇ 积分消耗 · 特权兑换</div>
+                <div style={{ background:c.card, borderRadius:18, border:`1px solid ${c.border}`, overflow:"hidden" }}>
+                  {COIN_SPEND.map((s,i)=>(
+                    <div key={i} style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"14px 24px", borderBottom:i<COIN_SPEND.length-1?`1px solid ${c.border}44`:"none", background:i%2===0?"transparent":`${c.surface}50` }}>
+                      <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+                        <span style={{ fontSize:20 }}>{s.icon}</span>
+                        <span style={{ fontSize:14 }}>{s.item}</span>
+                      </div>
+                      {s.coin ? <div style={{ padding:"3px 14px", borderRadius:20, background:`${c.coral}18`, color:c.coral, fontWeight:800, fontSize:13, border:`1px solid ${c.coral}33` }}>-{s.coin} OPCoin</div>
+                        : <div style={{ fontSize:12, color:c.muted, fontStyle:"italic" }}>敬请期待</div>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2 */}
+            {tab===2 && (
+              <div style={{ animation:"fadeUp .3s ease" }}>
+                <div style={{ marginBottom:20 }}>
+                  <h2 style={{ margin:"0 0 4px", fontSize:19, fontWeight:800 }}>荣誉激励体系 · 游戏化驱动社区贡献</h2>
+                  <p style={{ margin:0, color:c.muted, fontSize:13 }}>将岛民行为转化为可感知的荣誉与奖励，提升归属感与持续贡献动力</p>
+                </div>
+                <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:14, marginBottom:28 }}>
+                  {[{icon:"🪙",name:"积分系统",sub:"社区货币 OPCoin",color:c.gold,desc:"完成任务获取，可兑换资源与权限。打造岛内流通经济体。"},{icon:"🏅",name:"勋章系统",sub:"丰富社交形象",color:c.cyan,desc:"完成任务或活动获得精美勋章，支持个人主页展示与社交分享。"},{icon:"📋",name:"任务体系",sub:"引导持续行为",color:c.green,desc:"每日、每周及成就任务，覆盖学习、分享、邀请全链路。"},{icon:"🏆",name:"榜单激励",sub:"激发竞争意识",color:c.coral,desc:"财富、影响力、成长多维榜单，每周更新，上榜获额外奖励。"}].map(m=>(
+                    <div key={m.name} style={{ background:c.card, borderRadius:18, padding:20, border:`1px solid ${m.color}33` }}>
+                      <div style={{ fontSize:28, marginBottom:10 }}>{m.icon}</div>
+                      <div style={{ fontWeight:800, fontSize:15, color:m.color, marginBottom:2 }}>{m.name}</div>
+                      <div style={{ fontSize:11, color:c.muted, marginBottom:10 }}>{m.sub}</div>
+                      <div style={{ fontSize:12, color:c.text, lineHeight:1.6 }}>{m.desc}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginBottom:14, fontSize:14, fontWeight:700, color:c.text }}>🎖️ 荣誉勋章示例</div>
+                <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:14, marginBottom:24 }}>
+                  {BADGES.map(b=>(
+                    <div key={b.name} className="badge-card" style={{ background:c.card, borderRadius:16, padding:"20px 20px", border:`1px solid ${b.color}33` }}>
+                      <div style={{ fontSize:34, marginBottom:10 }}>{b.icon}</div>
+                      <div style={{ fontWeight:700, fontSize:15, marginBottom:4 }}>{b.name}</div>
+                      <div style={{ fontSize:12, color:c.muted, marginBottom:12, lineHeight:1.5 }}>{b.desc}</div>
+                      <span style={{ padding:"2px 10px", borderRadius:10, fontSize:11, fontWeight:700, background:`${b.color}18`, color:b.color, border:`1px solid ${b.color}33` }}>{b.rarity}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ padding:"14px 20px", borderRadius:14, background:c.card, border:`1px solid ${c.border}`, display:"flex", gap:24, alignItems:"center", flexWrap:"wrap", marginBottom:20 }}>
+                  <span style={{ fontSize:12, fontWeight:700, color:c.muted }}>稀有度说明：</span>
+                  {[{n:"普通",color:"#5b8ab0"},{n:"稀有",color:c.cyan},{n:"史诗",color:c.purple},{n:"传说",color:c.gold},{n:"限定",color:c.coral}].map(r=>(
+                    <div key={r.n} style={{ display:"flex", alignItems:"center", gap:6 }}>
+                      <div style={{ width:9, height:9, borderRadius:"50%", background:r.color }}/>
+                      <span style={{ fontSize:12, color:r.color, fontWeight:600 }}>{r.n}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ background:c.card, borderRadius:18, padding:22, border:`1px solid ${c.border}` }}>
+                  <div style={{ fontWeight:700, fontSize:14, marginBottom:14 }}>📅 任务体系示例</div>
+                  <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12 }}>
+                    {[{type:"每日任务",color:c.green,tasks:["登录社区签到 +20","完成1篇文章阅读 +10","发表1条话题互动 +15"]},{type:"每周任务",color:c.cyan,tasks:["参加1次直播课 +100","发布1次项目进展 +80","邀请1位好友查看 +50"]},{type:"成就任务",color:c.gold,tasks:["首次发表文章被收纳 +200","首次完成变现案例分享 +500","累计邀请10位岛民 +800"]}].map(t=>(
+                      <div key={t.type} style={{ padding:"14px 16px", borderRadius:12, background:`${t.color}0d`, border:`1px solid ${t.color}22` }}>
+                        <div style={{ fontSize:12, fontWeight:700, color:t.color, marginBottom:10 }}>{t.type}</div>
+                        {t.tasks.map((tk,i)=>(
+                          <div key={i} style={{ fontSize:12, color:c.muted, padding:"4px 0", borderBottom:i<t.tasks.length-1?`1px solid ${c.border}44`:"none" }}>{tk}</div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3 */}
+            {tab===3 && (
+              <div style={{ animation:"fadeUp .3s ease" }}>
+                <div style={{ marginBottom:20 }}>
+                  <h2 style={{ margin:"0 0 4px", fontSize:19, fontWeight:800 }}>OPC跃迁岛 · 运营生态全景图</h2>
+                  <p style={{ margin:0, color:c.muted, fontSize:13 }}>从冷启动到商业闭环，构建技术×教育×社交三位一体的OPC生态</p>
+                </div>
+                <div style={{ marginBottom:12, fontSize:13, fontWeight:700, color:c.cyan }}>🚀 冷启动SOP · 30天从0到1000种子岛民</div>
+                <div style={{ display:"flex", gap:8, marginBottom:28, alignItems:"stretch" }}>
+                  {OPS.map((op,i)=>(
+                    <div key={op.phase} style={{ flex:1, display:"flex", alignItems:"center", gap:8 }}>
+                      <div style={{ flex:1, background:c.card, borderRadius:16, overflow:"hidden", border:`1px solid ${op.color}33` }}>
+                        <div style={{ padding:"12px 16px", background:`${op.color}14`, borderBottom:`1px solid ${op.color}22` }}>
+                          <div style={{ fontSize:20, marginBottom:4 }}>{op.icon}</div>
+                          <div style={{ fontSize:13, fontWeight:800, color:op.color }}>{op.phase}</div>
+                        </div>
+                        {op.items.map((item,ii)=>(
+                          <div key={ii} style={{ padding:"8px 16px", fontSize:12, color:c.muted, borderBottom:ii<op.items.length-1?`1px solid ${c.border}33`:"none", display:"flex", alignItems:"flex-start", gap:6 }}>
+                            <div style={{ width:4, height:4, borderRadius:"50%", background:op.color, marginTop:5, flexShrink:0 }}/>
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                      {i<3 && <div style={{ fontSize:18, color:c.muted, flexShrink:0 }}>→</div>}
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:24 }}>
+                  <div style={{ background:c.card, borderRadius:18, padding:22, border:`1px solid ${c.border}` }}>
+                    <div style={{ fontWeight:800, fontSize:14, marginBottom:14, color:c.cyan }}>💻 线上运营 · 内容-培训-活动三位一体</div>
+                    {[{label:"内容体系",color:c.teal,items:["日更OPC早报，保持高频触达","每周直播课，深度解析热点","每月线上讨论会，沉淀行业价值"]},{label:"培训体系",color:c.cyan,items:["入门营→实战营→精英营→导师营","阶梯式成长，与岛民等级深度绑定"]},{label:"线上活动",color:c.green,items:["游戏化实战计划","AI工具比武大会","深夜茶话会·深度归属感"]}].map(s=>(
+                      <div key={s.label} style={{ marginBottom:12 }}>
+                        <div style={{ fontSize:12, fontWeight:700, color:s.color, marginBottom:6 }}>{s.label}</div>
+                        {s.items.map((it,i)=><div key={i} style={{ fontSize:12, color:c.muted, paddingLeft:10, marginBottom:3, lineHeight:1.5 }}>· {it}</div>)}
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ background:c.card, borderRadius:18, padding:22, border:`1px solid ${c.border}` }}>
+                    <div style={{ fontWeight:800, fontSize:14, marginBottom:14, color:c.gold }}>🏙️ 线下运营 · 从弱连接到强连接</div>
+                    {[{icon:"🏢",name:"OPC快闪办公室",desc:"核心城市免费工位（积分换取），打造高颜值打卡交流空间"},{icon:"🌆",name:"城市OPC沙龙",desc:"每月不同城市举办小型主题沙龙，促进成员线下组队与合作"},{icon:"⚡",name:"OPC集训营",desc:"每季度2天1夜封闭式实战集训，高强度打磨项目与能力"},{icon:"🎓",name:"OPC毕业礼",desc:"为优秀学员举办盛大线下毕业典礼，打造专属仪式感与荣誉感"}].map(s=>(
+                      <div key={s.name} style={{ display:"flex", gap:10, marginBottom:12, padding:"10px 12px", borderRadius:10, background:`${c.gold}0a`, border:`1px solid ${c.gold}18` }}>
+                        <span style={{ fontSize:18, flexShrink:0 }}>{s.icon}</span>
+                        <div>
+                          <div style={{ fontSize:13, fontWeight:700, color:c.gold, marginBottom:2 }}>{s.name}</div>
+                          <div style={{ fontSize:12, color:c.muted, lineHeight:1.4 }}>{s.desc}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ background:c.card, borderRadius:18, padding:22, border:`1px solid ${c.border}`, marginBottom:24 }}>
+                  <div style={{ fontWeight:800, fontSize:14, marginBottom:14 }}>💫 岛民价值体系 · 越成长越值钱</div>
+                  <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12 }}>
+                    {[{icon:"📈",name:"成长价值",color:c.cyan,desc:"从普通人到超级个体，建立核心竞争力"},{icon:"🤖",name:"工具价值",color:c.green,desc:"AI赋能效率倍增，重构工作流释放创造力"},{icon:"💰",name:"商业价值",color:c.gold,desc:"OPC项目变现增长，个人能力转化为收益"},{icon:"🌐",name:"人脉价值",color:c.purple,desc:"链接导师与投资人，构建高质量人脉网络"}].map(v=>(
+                      <div key={v.name} style={{ padding:"14px 14px", borderRadius:12, background:`${v.color}0d`, border:`1px solid ${v.color}22`, textAlign:"center" }}>
+                        <div style={{ fontSize:24, marginBottom:8 }}>{v.icon}</div>
+                        <div style={{ fontSize:13, fontWeight:700, color:v.color, marginBottom:6 }}>{v.name}</div>
+                        <div style={{ fontSize:11, color:c.muted, lineHeight:1.5 }}>{v.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ background:c.card, borderRadius:18, padding:22, border:`1px solid ${c.border}`, marginBottom:24 }}>
+                  <div style={{ fontWeight:800, fontSize:14, marginBottom:14 }}>🏦 商业闭环 · 多元化收入来源</div>
+                  <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12 }}>
+                    {BIZMODES.map(b=>(
+                      <div key={b.name} style={{ padding:"16px 14px", borderRadius:12, background:`${b.color}0d`, border:`1px solid ${b.color}22` }}>
+                        <div style={{ fontSize:22, marginBottom:8 }}>{b.icon}</div>
+                        <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:6 }}>
+                          <span style={{ fontSize:14, fontWeight:800, color:b.color }}>{b.name}</span>
+                          <span style={{ padding:"1px 7px", borderRadius:8, fontSize:10, fontWeight:700, background:`${b.color}22`, color:b.color }}>{b.tag}</span>
+                        </div>
+                        <div style={{ fontSize:11, color:c.muted, lineHeight:1.5 }}>{b.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ padding:22, borderRadius:18, background:`linear-gradient(135deg,${c.cyan}0d,${c.purple}08)`, border:`1px solid ${c.cyan}22` }}>
+                  <div style={{ fontWeight:800, fontSize:14, marginBottom:14, color:c.cyan }}>🌌 未来展望 · 从"跃迁岛"到"创业小宇宙"</div>
+                  <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10 }}>
+                    {[{icon:"🤖",name:"AI Agent化",desc:"7×24小时个性化服务与即时响应"},{icon:"🌐",name:"虚实融合化",desc:"与元宇宙深度融合，提供沉浸式交互"},{icon:"🎯",name:"产业垂直化",desc:"孵化垂直领域OPC细分社区"},{icon:"🌍",name:"全球化协作",desc:"连接全球OPC创业者，无边界协作"}].map(f=>(
+                      <div key={f.name} style={{ padding:"12px 14px", borderRadius:10, background:`${c.surface}80`, border:`1px solid ${c.border}` }}>
+                        <div style={{ fontSize:22, marginBottom:6 }}>{f.icon}</div>
+                        <div style={{ fontSize:13, fontWeight:700, marginBottom:4 }}>{f.name}</div>
+                        <div style={{ fontSize:11, color:c.muted, lineHeight:1.4 }}>{f.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+
+          {/* Footer */}
+          <div style={{ borderTop:`1px solid ${c.border}`, padding:"16px 44px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+            <div style={{ fontSize:12, color:c.muted }}>OPC跃迁岛 · 2026© 华合广计（北京）信息科技有限公司</div>
+            <div style={{ fontSize:12, color:c.cyan, fontWeight:600 }}>一人，一AI，一生态，自成一家公司</div>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

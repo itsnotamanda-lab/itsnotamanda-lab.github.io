@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>OPC 跃迁岛龙虾市集 · 青岛首届 · 3月25日</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Serif+SC:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0C0A06;
+  --bg2:      #13100A;
+  --bg3:      #1C1710;
+  --fire:     #FF4400;
+  --amber:    #FF9500;
+  --gold:     #FFCC44;
+  --gold-lt:  #FFE07A;
+  --cream:    #FFF5E0;
+  --cream2:   #FFE8B8;
+  --teal:     #00DDBB;
+  --teal-dim: #00665A;
+  --muted:    rgba(255,245,224,0.5);
+  --subtle:   rgba(255,245,224,0.12);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--cream);font-family:'Noto Serif SC',serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ──── GRAIN ──── */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:8000;mix-blend-mode:overlay;}
+
+/* ──── HERO ──── */
+.hero{min-height:100svh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;overflow:hidden;padding-bottom:3.5rem;}
+
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 100% 70% at 50% 90%,rgba(255,100,0,0.22) 0%,transparent 65%),radial-gradient(ellipse 70% 50% at 20% 70%,rgba(255,60,0,0.1) 0%,transparent 55%),linear-gradient(185deg,#0C0A06 0%,#180E05 50%,#0C0A06 100%);}
+
+/* Grid lines */
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,149,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,149,0,0.04) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse 100% 80% at 50% 100%,black 0%,transparent 70%);}
+
+/* Floating ember dots */
+.embers{position:absolute;inset:0;pointer-events:none;}
+.ep{position:absolute;border-radius:50%;animation:rise linear infinite;opacity:0;}
+@keyframes rise{0%{transform:translateY(0) translateX(0);opacity:0;}15%{opacity:0.9;}80%{opacity:0.15;}100%{transform:translateY(-90vh) translateX(var(--dx));opacity:0;}}
+
+/* Top bar */
+.topbar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:1.3rem 1.5rem;z-index:10;}
+.tb-left{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.3em;color:var(--amber);opacity:0.65;}
+.tb-right{font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;padding:0.28rem 0.8rem;border:1px solid rgba(255,149,0,0.3);border-radius:100px;color:var(--gold);background:rgba(255,149,0,0.08);}
+
+/* Hero content */
+.hero-c{position:relative;z-index:5;width:100%;max-width:520px;padding:0 1.4rem;text-align:center;}
+
+.h-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;background:linear-gradient(135deg,var(--fire),var(--amber));color:#fff;font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.22em;padding:0.28rem 0.9rem;border-radius:3px;margin-bottom:1.2rem;box-shadow:0 0 28px rgba(255,68,0,0.55);animation:badge-glow 3s ease-in-out infinite;}
+@keyframes badge-glow{0%,100%{box-shadow:0 0 28px rgba(255,68,0,0.55);}50%{box-shadow:0 0 50px rgba(255,68,0,0.85),0 0 100px rgba(255,68,0,0.2);}}
+
+.h-lobster{font-size:clamp(4.5rem,18vw,8rem);display:block;margin:0 auto 0.3rem;filter:drop-shadow(0 0 28px rgba(255,80,0,0.7));animation:lob-rock 3s ease-in-out infinite;}
+@keyframes lob-rock{0%,100%{transform:rotate(-7deg) scale(1);}50%{transform:rotate(7deg) scale(1.08);}}
+
+.h-title-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,21vw,10rem);line-height:0.85;letter-spacing:0.03em;color:var(--cream);text-shadow:0 0 60px rgba(255,149,0,0.2);margin-bottom:0.25rem;}
+
+.h-title-row{display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.9rem;}
+.hr-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--amber));}
+.hr-line.r{background:linear-gradient(90deg,var(--amber),transparent);}
+.h-title-cn{font-size:clamp(1rem,4.2vw,1.7rem);font-weight:900;letter-spacing:0.2em;color:var(--gold);}
+
+/* Info chips */
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:0.55rem;margin:1.3rem 0 2rem;}
+.chip{display:flex;align-items:center;gap:0.38rem;border:1px solid rgba(255,200,68,0.2);background:rgba(255,149,0,0.07);border-radius:8px;padding:0.42rem 0.85rem;font-size:0.77rem;color:var(--cream2);backdrop-filter:blur(6px);}
+.chip em{font-style:normal;font-size:0.9rem;}
+
+.cta{display:inline-flex;align-items:center;gap:0.5rem;background:linear-gradient(135deg,var(--amber) 0%,var(--fire) 100%);color:#fff;font-family:'Noto Serif SC',serif;font-weight:700;font-size:1rem;letter-spacing:0.08em;padding:0.85rem 2.2rem;border-radius:8px;border:none;cursor:pointer;box-shadow:0 4px 30px rgba(255,100,0,0.45);transition:transform 0.15s,box-shadow 0.15s;text-decoration:none;}
+.cta:active{transform:scale(0.96);}
+
+/* Scroll arrow */
+.scroll-hint{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:0.35rem;opacity:0.4;}
+.sh-txt{font-family:'JetBrains Mono',monospace;font-size:0.52rem;letter-spacing:0.3em;color:var(--amber);}
+.sh-arrow{width:1px;height:36px;background:linear-gradient(to bottom,transparent,var(--teal));animation:sh-drop 1.6s ease-in-out infinite;}
+@keyframes sh-drop{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+/* Bottom wave */
+.hero-wave{position:absolute;bottom:-1px;left:0;width:100%;z-index:6;}
+
+/* ──── COUNTDOWN ──── */
+.countdown{background:var(--bg2);border-top:1px solid rgba(255,149,0,0.08);border-bottom:1px solid rgba(255,149,0,0.08);padding:1.5rem 1.4rem;text-align:center;}
+.cd-label{font-family:'JetBrains Mono',monospace;font-size:0.55rem;letter-spacing:0.38em;color:var(--amber);opacity:0.6;margin-bottom:0.9rem;text-transform:uppercase;}
+.cd-row{display:flex;align-items:flex-end;justify-content:center;gap:0.25rem;}
+.cd-unit{display:flex;flex-direction:column;align-items:center;}
+.cd-n{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,10vw,3.6rem);line-height:1;color:var(--gold);text-shadow:0 0 20px rgba(255,200,68,0.4);min-width:2.4ch;text-align:center;}
+.cd-sep{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,8vw,3rem);color:var(--amber);opacity:0.4;margin-bottom:0.3rem;}
+.cd-u{font-family:'JetBrains Mono',monospace;font-size:0.48rem;letter-spacing:0.18em;color:var(--muted);margin-top:0.15rem;text-transform:uppercase;}
+
+/* ──── SECTION COMMONS ──── */
+.sec{padding:4.5rem 1.4rem;position:relative;overflow:hidden;}
+.sec-in{max-width:520px;margin:0 auto;}
+.eyebrow{display:flex;align-items:center;gap:0.65rem;margin-bottom:0.75rem;}
+.ey-bar{width:22px;height:2px;background:var(--amber);border-radius:1px;flex-shrink:0;}
+.ey-txt{font-family:'JetBrains Mono',monospace;font-size:0.56rem;letter-spacing:0.32em;color:var(--amber);text-transform:uppercase;opacity:0.7;}
+.sec-title{font-size:clamp(1.7rem,6.5vw,2.8rem);font-weight:900;line-height:1.18;margin-bottom:1rem;}
+.a{color:var(--gold);}
+.d{color:var(--muted);font-size:0.6em;letter-spacing:0.06em;}
+
+/* Fade-in on scroll */
+.fi{opacity:0;transform:translateY(22px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.fi.on{opacity:1;transform:translateY(0);}
+
+/* ──── PROGRAM ──── */
+.program-sec{background:var(--bg2);}
+
+.tl{position:relative;margin-top:2.5rem;display:flex;flex-direction:column;gap:0;}
+.tl::before{content:'';position:absolute;left:29px;top:30px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--fire) 0%,var(--amber) 45%,var(--teal) 100%);z-index:0;}
+
+.tl-item{display:flex;gap:1.3rem;align-items:flex-start;padding-bottom:2.6rem;position:relative;}
+.tl-item:last-child{padding-bottom:0;}
+
+.tl-icon{width:58px;min-width:58px;height:58px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.55rem;position:relative;z-index:1;flex-shrink:0;}
+.ic-1{background:linear-gradient(135deg,#CC2200,#FF7700);box-shadow:0 0 22px rgba(255,80,0,0.5);}
+.ic-2{background:linear-gradient(135deg,#004F47,#00DDBB);box-shadow:0 0 22px rgba(0,221,187,0.38);}
+.ic-3{background:linear-gradient(135deg,#4A3500,#FFB830);box-shadow:0 0 22px rgba(255,184,48,0.38);}
+
+.tl-body{padding-top:0.55rem;}
+.tl-tag{font-family:'JetBrains Mono',monospace;font-size:0.53rem;letter-spacing:0.28em;color:var(--amber);text-transform:uppercase;opacity:0.65;margin-bottom:0.28rem;}
+.tl-name{font-size:1.08rem;font-weight:900;line-height:1.4;margin-bottom:0.55rem;color:var(--cream);}
+.tl-desc{font-size:0.79rem;line-height:1.85;color:var(--muted);}
+.tl-pts{list-style:none;margin-top:0.65rem;display:flex;flex-direction:column;gap:0.42rem;}
+.tl-pts li{display:flex;align-items:flex-start;gap:0.45rem;font-size:0.77rem;color:var(--muted);line-height:1.65;}
+.tl-pts li::before{content:'▸';color:var(--amber);font-size:0.62rem;margin-top:0.22rem;flex-shrink:0;}
+
+/* ──── OPENCLAW ──── */
+.oc-sec{background:var(--bg);}
+
+.oc-card{margin:2rem 0;background:linear-gradient(135deg,rgba(255,149,0,0.08),rgba(0,221,187,0.05));border:1px solid rgba(255,149,0,0.14);border-radius:22px;padding:2rem 1.5rem;text-align:center;position:relative;overflow:hidden;}
+.oc-card::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:240px;height:240px;background:radial-gradient(circle,rgba(255,149,0,0.12) 0%,transparent 70%);pointer-events:none;}
+.oc-logo{width:70px;height:70px;background:linear-gradient(135deg,#FF3300,#FF9500);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:2.1rem;margin:0 auto 0.9rem;box-shadow:0 0 40px rgba(255,80,0,0.5);animation:lp 3s ease-in-out infinite;}
+@keyframes lp{0%,100%{box-shadow:0 0 40px rgba(255,80,0,0.5);}50%{box-shadow:0 0 65px rgba(255,80,0,0.85),0 0 120px rgba(255,80,0,0.15);}}
+.oc-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.4rem;}
+.oc-sub{font-size:0.77rem;color:var(--muted);line-height:1.75;}
+
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.5rem;}
+.wc{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.055);border-radius:14px;padding:1.1rem 1rem;}
+.wc-i{font-size:1.4rem;margin-bottom:0.45rem;display:block;}
+.wc-t{font-size:0.8rem;font-weight:700;margin-bottom:0.28rem;color:var(--cream);}
+.wc-d{font-size:0.7rem;color:var(--muted);line-height:1.6;}
+
+/* ──── DEPLOY TERMINAL ──── */
+.deploy-sec{background:var(--bg2);}
+.terminal{margin:2rem 0;border-radius:14px;overflow:hidden;box-shadow:0 0 50px rgba(0,0,0,0.6),0 0 0 1px rgba(0,221,187,0.1);}
+.t-bar{background:#111;padding:0.65rem 1rem;display:flex;align-items:center;gap:0.4rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.d-dot{width:11px;height:11px;border-radius:50%;}
+.dd-r{background:#FF5F57;}.dd-y{background:#FEBC2E;}.dd-g{background:#28C840;}
+.t-label{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:rgba(255,255,255,0.22);margin-left:auto;}
+.t-body{background:#0A0A0A;padding:1.2rem;font-family:'JetBrains Mono',monospace;font-size:0.71rem;line-height:2;}
+.t-ln{display:flex;gap:0.45rem;opacity:0;animation:t-appear 0.3s ease forwards;}
+@keyframes t-appear{to{opacity:1;}}
+.p-prompt{color:var(--teal);}
+.p-cmd{color:var(--cream);}
+.p-out{color:rgba(255,245,224,0.38);padding-left:0.8rem;}
+.p-ok{color:#28C840;padding-left:0.8rem;}
+.p-cursor{display:inline-block;width:7px;height:13px;background:var(--teal);vertical-align:middle;animation:blink 1s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* ──── AWARDS ──── */
+.award-sec{background:var(--bg);text-align:center;}
+.trophy{font-size:3.5rem;display:block;margin:0 auto 1rem;animation:trophy-bob 2.5s ease-in-out infinite;}
+@keyframes trophy-bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.award-desc{font-size:0.85rem;color:var(--muted);line-height:1.8;max-width:320px;margin:0 auto 1.5rem;}
+.award-badge{display:inline-flex;align-items:center;gap:0.5rem;background:linear-gradient(135deg,rgba(255,200,68,0.12),rgba(255,100,0,0.08));border:1px solid rgba(255,200,68,0.3);border-radius:100px;padding:0.5rem 1.3rem;font-size:0.8rem;color:var(--gold);font-weight:700;}
+
+/* ──── PARTNERS ──── */
+.partners-sec{background:var(--bg2);}
+.p-label{font-size:0.7rem;color:var(--muted);margin-bottom:0.9rem;letter-spacing:0.05em;}
+.p-grid{display:flex;flex-wrap:wrap;gap:0.6rem;}
+.p-chip{display:flex;align-items:center;gap:0.38rem;background:rgba(255,245,224,0.04);border:1px solid rgba(255,245,224,0.1);border-radius:8px;padding:0.45rem 0.85rem;font-size:0.74rem;color:var(--cream2);}
+.p-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0;}
+
+.organizer-row{margin-bottom:2rem;padding:1.1rem;background:linear-gradient(135deg,rgba(255,149,0,0.1),rgba(255,100,0,0.06));border:1px solid rgba(255,149,0,0.2);border-radius:12px;}
+.org-label{font-family:'JetBrains Mono',monospace;font-size:0.54rem;letter-spacing:0.28em;color:var(--amber);opacity:0.65;margin-bottom:0.35rem;text-transform:uppercase;}
+.org-name{font-size:0.9rem;font-weight:700;color:var(--cream);}
+
+/* ──── LOCATION ──── */
+.location-sec{background:var(--bg);}
+.loc-card{background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;margin-top:1.8rem;}
+.loc-map{height:170px;background:var(--bg2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.loc-map::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,149,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,149,0,0.04) 1px,transparent 1px);background-size:36px 36px;}
+.map-pin-wrap{display:flex;flex-direction:column;align-items:center;z-index:1;}
+.map-pin{font-size:2.8rem;filter:drop-shadow(0 4px 14px rgba(255,68,0,0.65));animation:pin-bob 2s ease-in-out infinite;}
+@keyframes pin-bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.map-ring{width:44px;height:12px;background:rgba(255,68,0,0.25);border-radius:50%;animation:ring-pulse 2s ease-in-out infinite;}
+@keyframes ring-pulse{0%,100%{transform:scaleX(0.8);opacity:0.4;}50%{transform:scaleX(1.3);opacity:0.8;}}
+.loc-body{padding:1.3rem 1.2rem;}
+.loc-row{display:flex;align-items:flex-start;gap:0.85rem;padding:0.8rem;background:rgba(255,255,255,0.03);border-radius:10px;margin-bottom:0.6rem;}
+.loc-row:last-child{margin-bottom:0;}
+.lr-icon{font-size:1.15rem;margin-top:0.05rem;}
+.lr-text{font-size:0.82rem;line-height:1.55;}
+.lr-text strong{display:block;color:var(--cream);font-size:0.9rem;margin-bottom:0.1rem;}
+.lr-text span{color:var(--muted);font-size:0.74rem;}
+
+/* ──── FOOTER CTA ──── */
+.footer-cta{background:linear-gradient(180deg,var(--bg) 0%,#110A02 100%);text-align:center;padding:5rem 1.4rem 4rem;position:relative;overflow:hidden;}
+.footer-cta::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:360px;height:360px;background:radial-gradient(circle,rgba(255,149,0,0.1) 0%,transparent 70%);pointer-events:none;}
+.footer-cta .lobster-big{font-size:3.8rem;display:block;margin:0 auto 0.8rem;animation:lob-rock 3s ease-in-out infinite;}
+.ft-title{font-size:clamp(1.7rem,6vw,2.5rem);font-weight:900;margin-bottom:0.8rem;position:relative;}
+.ft-sub{font-size:0.85rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;position:relative;}
+.ft-note{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:rgba(255,245,224,0.2);letter-spacing:0.15em;margin-top:3rem;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="embers" id="embers"></div>
+
+  <div class="topbar">
+    <span class="tb-left">OPC · 跃迁岛 · 2026</span>
+    <span class="tb-right">青岛首届</span>
+  </div>
+
+  <div class="hero-c">
+    <div class="h-eyebrow">🦞 &nbsp;INAUGURAL LOBSTER FESTIVAL</div>
+
+    <span class="h-lobster">🦞</span>
+
+    <div class="h-title-big">LOBSTER</div>
+
+    <div class="h-title-row">
+      <div class="hr-line"></div>
+      <div class="h-title-cn">跃迁岛龙虾市集</div>
+      <div class="hr-line r"></div>
+    </div>
+
+    <div class="chips">
+      <div class="chip"><em>📅</em> 3月25日（拟）</div>
+      <div class="chip"><em>🕑</em> 14:00 – 17:00</div>
+      <div class="chip"><em>📍</em> 青岛市数据要素产业园</div>
+      <div class="chip"><em>🤖</em> AI × 教育 × 社区</div>
+    </div>
+
+    <a class="cta" href="#agenda">查看活动议程 &nbsp;→</a>
+  </div>
+
+  <div class="scroll-hint">
+    <span class="sh-txt">SCROLL</span>
+    <div class="sh-arrow"></div>
+  </div>
+
+  <svg class="hero-wave" viewBox="0 0 390 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,28 C65,52 130,8 195,28 C260,48 325,12 390,28 L390,56 L0,56 Z" fill="#13100A"/>
+  </svg>
+</section>
+
+<!-- ══════════════ COUNTDOWN ══════════════ -->
+<div class="countdown">
+  <div class="cd-label">距活动开始</div>
+  <div class="cd-row">
+    <div class="cd-unit"><div class="cd-n" id="cd-d">--</div><div class="cd-u">天</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-n" id="cd-h">--</div><div class="cd-u">时</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-n" id="cd-m">--</div><div class="cd-u">分</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-n" id="cd-s">--</div><div class="cd-u">秒</div></div>
+  </div>
+</div>
+
+<!-- ══════════════ AGENDA ══════════════ -->
+<section class="sec program-sec" id="agenda">
+  <div class="sec-in">
+    <div class="eyebrow fi"><div class="ey-bar"></div><span class="ey-txt">AGENDA · 活动议程</span></div>
+    <h2 class="sec-title fi">三大环节<br><span class="d">精彩不间断</span></h2>
+
+    <div class="tl">
+
+      <!-- Session 01 -->
+      <div class="tl-item fi">
+        <div class="tl-icon ic-1">🎙️</div>
+        <div class="tl-body">
+          <div class="tl-tag">SESSION 01 · 14:00 – 15:30</div>
+          <div class="tl-name">开场 + 行业大咖分享</div>
+          <div class="tl-desc">跃迁岛主理人开场，带你了解如何上岛、加入OPC社区。随后两位行业大咖深度分享：</div>
+          <ul class="tl-pts">
+            <li>AI 时代最近发生了什么真实变化</li>
+            <li>OpenClaw 为什么突然爆火全球社区</li>
+            <li>小龙虾对个体而言究竟有什么用</li>
+            <li>AI × 教育：机遇在哪里，风险在哪里</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Session 02 -->
+      <div class="tl-item fi">
+        <div class="tl-icon ic-2">🦞</div>
+        <div class="tl-body">
+          <div class="tl-tag">SESSION 02 · 15:30 – 16:15</div>
+          <div class="tl-name">手把手部署小龙虾</div>
+          <div class="tl-desc">嘉宾现场手把手带你完成部署，零基础也能跑起来。</div>
+          <ul class="tl-pts">
+            <li>现场实操：从零开始部署你的第一只虾</li>
+            <li>养虾心得分享：踩过哪些坑、有哪些经验</li>
+            <li>如何给你的小龙虾添加独特能力</li>
+            <li>带上电脑 or 围观学习——均欢迎</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Session 03 -->
+      <div class="tl-item fi">
+        <div class="tl-icon ic-3">🏆</div>
+        <div class="tl-body">
+          <div class="tl-tag">SESSION 03 · 16:15 – 17:00</div>
+          <div class="tl-name">互动交流 · 票选最佳养虾户</div>
+          <div class="tl-desc">边吃龙虾边聊，进入最 high 的环节：</div>
+          <ul class="tl-pts">
+            <li>分享你给龙虾加了什么能力、想解决什么问题</li>
+            <li>下一步希望怎么升级你的虾</li>
+            <li>自由组队，资源对接，找到你的共建伙伴</li>
+            <li>🏆 现场票选「最佳龙虾养殖户」</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ OPENCLAW SPOTLIGHT ══════════════ -->
+<section class="sec oc-sec">
+  <div class="sec-in">
+    <div class="eyebrow fi"><div class="ey-bar"></div><span class="ey-txt">SPOTLIGHT · 焦点话题</span></div>
+    <h2 class="sec-title fi">为什么是<br><span class="a">OpenClaw</span>？</h2>
+
+    <div class="oc-card fi">
+      <div class="oc-logo">🦞</div>
+      <div class="oc-name">OPENCLAW</div>
+      <div class="oc-sub">它如何在短短数周席卷开发者社区？<br>这次，懂它的人来当面聊透。</div>
+    </div>
+
+    <div class="why-grid">
+      <div class="wc fi">
+        <span class="wc-i">⚡</span>
+        <div class="wc-t">爆火背后的逻辑</div>
+        <div class="wc-d">架构设计到生态位，拆解核心竞争力</div>
+      </div>
+      <div class="wc fi">
+        <span class="wc-i">📈</span>
+        <div class="wc-t">AI 最近在变什么</div>
+        <div class="wc-d">大模型迭代加速，行业正在发生的真实转变</div>
+      </div>
+      <div class="wc fi">
+        <span class="wc-i">🎓</span>
+        <div class="wc-t">AI × 教育碰撞</div>
+        <div class="wc-d">个性化学习、AI 辅助教学的落地实践</div>
+      </div>
+      <div class="wc fi">
+        <span class="wc-i">👤</span>
+        <div class="wc-t">对个体有什么用</div>
+        <div class="wc-d">普通人如何用小龙虾构建自己的 AI 能力</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ DEPLOY ══════════════ -->
+<section class="sec deploy-sec">
+  <div class="sec-in">
+    <div class="eyebrow fi"><div class="ey-bar"></div><span class="ey-txt">LIVE DEMO · 现场实战</span></div>
+    <h2 class="sec-title fi">你的第一只<br><span class="a">数字小龙虾</span></h2>
+
+    <div class="terminal fi">
+      <div class="t-bar">
+        <div class="d-dot dd-r"></div><div class="d-dot dd-y"></div><div class="d-dot dd-g"></div>
+        <span class="t-label">lobster-deploy — bash</span>
+      </div>
+      <div class="t-body" id="term-body">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <p class="tl-desc fi" style="text-align:center;">带电脑来现场，嘉宾手把手陪你跑通全程<br>不带也没关系——看会了也是收获 🦞</p>
+  </div>
+</section>
+
+<!-- ══════════════ AWARD ══════════════ -->
+<section class="sec award-sec">
+  <div class="sec-in" style="text-align:center;">
+    <div class="eyebrow fi" style="justify-content:center;"><div class="ey-bar"></div><span class="ey-txt">AWARD · 荣誉殿堂</span><div class="ey-bar" style="background:linear-gradient(90deg,var(--amber),transparent);"></div></div>
+
+    <span class="trophy fi">🏆</span>
+    <h2 class="sec-title fi" style="text-align:center;">现场票选<br><span class="a">最佳龙虾养殖户</span></h2>
+    <p class="award-desc fi">展示你的虾、讲出你的故事<br>让现场所有人投票，决出最有创意的龙虾养殖户！</p>
+    <div class="award-badge fi">🦞 &nbsp;最佳养殖户 · 现场荣誉加冕</div>
+  </div>
+</section>
+
+<!-- ══════════════ PARTNERS ══════════════ -->
+<section class="sec partners-sec">
+  <div class="sec-in">
+    <div class="eyebrow fi"><div class="ey-bar"></div><span class="ey-txt">ORGANIZER & CO-CREATE</span></div>
+    <h2 class="sec-title fi">主办与共创</h2>
+
+    <div class="organizer-row fi">
+      <div class="org-label">活动主办方</div>
+      <div class="org-name">🏢 青岛市数据要素产业园</div>
+    </div>
+
+    <div class="p-label fi">共创社区 · CO-CREATE COMMUNITIES</div>
+    <div class="p-grid fi">
+      <div class="p-chip"><div class="p-dot"></div>WaytoAGI</div>
+      <div class="p-chip"><div class="p-dot"></div>百度飞桨星河社区</div>
+      <div class="p-chip"><div class="p-dot"></div>Vibe Friends</div>
+      <div class="p-chip"><div class="p-dot"></div>飞书</div>
+      <div class="p-chip"><div class="p-dot"></div>硅基流动</div>
+      <div class="p-chip"><div class="p-dot"></div>观猹</div>
+      <div class="p-chip"><div class="p-dot"></div>知潜</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ LOCATION ══════════════ -->
+<section class="sec location-sec">
+  <div class="sec-in">
+    <div class="eyebrow fi"><div class="ey-bar"></div><span class="ey-txt">LOCATION · 活动地点</span></div>
+    <h2 class="sec-title fi">青岛 · <span class="a">3月25日</span></h2>
+
+    <div class="loc-card fi">
+      <div class="loc-map">
+        <div class="map-pin-wrap">
+          <div class="map-pin">📍</div>
+          <div class="map-ring"></div>
+        </div>
+      </div>
+      <div class="loc-body">
+        <div class="loc-row">
+          <span class="lr-icon">📅</span>
+          <div class="lr-text"><strong>2026 年 3 月 25 日（拟）</strong><span>14:00 – 17:00，请提前10分钟入场</span></div>
+        </div>
+        <div class="loc-row">
+          <span class="lr-icon">📍</span>
+          <div class="lr-text"><strong>青岛市数据要素产业园</strong><span>具体场地及停车信息报名后通知</span></div>
+        </div>
+        <div class="loc-row">
+          <span class="lr-icon">🎟️</span>
+          <div class="lr-text"><strong>限量席位 · 先到先得</strong><span>AI爱好者 · 教育从业者 · 开发者 · 创业者 均可报名</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER CTA ══════════════ -->
+<section class="footer-cta">
+  <span class="lobster-big fi">🦞</span>
+  <h2 class="ft-title fi">来青岛<br>吃虾、聊AI、交朋友</h2>
+  <p class="ft-sub fi">跃迁岛 × OPC × AI教育 × 龙虾市集<br>一个让你吃饱、聊透、带走干货的下午</p>
+  <a class="cta fi" href="#" onclick="alert('报名通道即将开放，敬请关注 OPC 跃迁岛！🦞');return false;">🎉 &nbsp;立即报名参加</a>
+  <div class="ft-note fi">OPC · 跃迁岛龙虾市集 · 青岛首届 · 2026 · MARCH 25 · 14:00–17:00</div>
+</section>
+
+<script>
+/* ── Embers ── */
+const embers = document.getElementById('embers');
+for(let i=0;i<22;i++){
+  const e=document.createElement('div');
+  e.className='ep';
+  const sz=Math.random()*8+3;
+  e.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:${Math.random()*20}%;--dx:${(Math.random()-0.5)*80}px;animation-duration:${Math.random()*8+6}s;animation-delay:${Math.random()*8}s;`;
+  embers.appendChild(e);
+}
+
+/* ── Countdown ── */
+function countdown(){
+  const target=new Date('2026-03-25T14:00:00+08:00');
+  const now=new Date();
+  const diff=target-now;
+  if(diff<=0){
+    document.getElementById('cd-d').textContent='00';
+    document.getElementById('cd-h').textContent='00';
+    document.getElementById('cd-m').textContent='00';
+    document.getElementById('cd-s').textContent='00';
+    return;
+  }
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  document.getElementById('cd-d').textContent=String(d).padStart(2,'0');
+  document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
+}
+countdown();
+setInterval(countdown,1000);
+
+/* ── Terminal typing ── */
+const lines=[
+  {t:'prompt',text:'git clone openclaw/lobster-agent'},
+  {t:'out',text:'Cloning into \'lobster-agent\'... ✓'},
+  {t:'prompt',text:'cd lobster-agent && npm install'},
+  {t:'out',text:'Installing dependencies (47 packages)...'},
+  {t:'out',text:'✓ All packages installed'},
+  {t:'prompt',text:'npm run setup -- --model gpt-4o'},
+  {t:'out',text:'Connecting to model API... ✓'},
+  {t:'ok',text:'🦞 Your lobster is alive on port 3000!'},
+  {t:'prompt',text:''},
+];
+const tb=document.getElementById('term-body');
+lines.forEach((l,i)=>{
+  const div=document.createElement('div');
+  div.className='t-ln';
+  div.style.animationDelay=(0.4+i*0.55)+'s';
+  if(l.t==='prompt'){
+    div.innerHTML=`<span class="p-prompt">$</span><span class="p-cmd"> ${l.text}${i===lines.length-1?'<span class="p-cursor"></span>':''}</span>`;
+  } else if(l.t==='ok'){
+    div.innerHTML=`<span class="p-ok">${l.text}</span>`;
+  } else {
+    div.innerHTML=`<span class="p-out">${l.text}</span>`;
+  }
+  tb.appendChild(div);
+});
+
+/* ── Scroll fade-in ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}});
+},{threshold:0.1,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.fi').forEach((el,i)=>{
+  el.style.transitionDelay=(i%4)*0.07+'s';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>

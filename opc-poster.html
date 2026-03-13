@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPC 龙虾市集 · 长图海报</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Serif+SC:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;background:#1A1005;}
+
+/* ── POSTER CANVAS ── */
+.poster{
+  width:750px;
+  margin:0 auto;
+  background:#0E0A05;
+  font-family:'Noto Serif SC',serif;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+  position:relative;
+}
+
+/* ── SECTION 1: HERO ── */
+.p-hero{
+  position:relative;
+  background:linear-gradient(180deg,#0C0805 0%,#1A0E03 40%,#0C0805 100%);
+  padding:0 0 3.5rem;
+  overflow:hidden;
+}
+
+/* Decorative geometric bg */
+.geo-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,149,0,0.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,149,0,0.05) 1px,transparent 1px);
+  background-size:50px 50px;
+  mask-image:radial-gradient(ellipse 100% 80% at 50% 100%,black 0%,transparent 75%);
+}
+
+/* Giant decorative number */
+.deco-num{
+  position:absolute;
+  right:-30px; top:40px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:380px;
+  line-height:1;
+  color:rgba(255,149,0,0.04);
+  user-select:none;
+  letter-spacing:-0.05em;
+}
+
+/* Diagonal stripe top */
+.stripe-top{
+  width:100%;
+  height:10px;
+  background:repeating-linear-gradient(
+    -45deg,
+    #FF4400 0px, #FF4400 12px,
+    #FF9500 12px, #FF9500 24px
+  );
+}
+
+.hero-inner{position:relative;z-index:2;padding:3rem 3rem 0;}
+
+.hero-tag-row{
+  display:flex; align-items:center; gap:1rem;
+  margin-bottom:2rem;
+}
+.h-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.7rem; letter-spacing:0.3em;
+  background:linear-gradient(135deg,#FF4400,#FF9500);
+  color:#fff;
+  padding:0.3rem 1rem;
+  border-radius:3px;
+  box-shadow:0 0 20px rgba(255,68,0,0.45);
+}
+.h-tag-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,149,0,0.4),transparent);}
+
+/* Giant lobster centered */
+.lobster-mega{
+  text-align:center;
+  font-size:120px;
+  line-height:1;
+  margin:1.5rem 0 1rem;
+  filter:drop-shadow(0 0 40px rgba(255,100,0,0.7)) drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+}
+
+/* Title treatment */
+.poster-title-en{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:110px;
+  line-height:0.88;
+  letter-spacing:0.04em;
+  color:#FFF5E0;
+  text-align:center;
+  text-shadow:0 0 80px rgba(255,149,0,0.2);
+  margin-bottom:0.5rem;
+}
+
+.title-divider{
+  display:flex; align-items:center; gap:1.2rem;
+  padding:0 3rem; margin:1rem 0;
+}
+.td-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,149,0,0.5));}
+.td-line.r{background:linear-gradient(90deg,rgba(255,149,0,0.5),transparent);}
+.td-cn{
+  font-size:1.9rem; font-weight:900; letter-spacing:0.22em;
+  color:#FFCC44;
+  white-space:nowrap;
+}
+
+/* Date / location block */
+.info-block{
+  margin:2rem 3rem 0;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:rgba(255,149,0,0.15);
+  border:1px solid rgba(255,149,0,0.2);
+  border-radius:16px;
+  overflow:hidden;
+}
+.ib-cell{
+  background:#110D07;
+  padding:1.3rem 1.5rem;
+  display:flex; align-items:center; gap:0.9rem;
+}
+.ib-icon{font-size:1.6rem;}
+.ib-text{}
+.ib-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.25em;color:rgba(255,200,68,0.55);text-transform:uppercase;margin-bottom:0.25rem;}
+.ib-val{font-size:1rem;font-weight:700;color:#FFF5E0;line-height:1.3;}
+.ib-sub{font-size:0.72rem;color:rgba(255,245,224,0.45);margin-top:0.15rem;}
+.ib-cell.full{grid-column:1/-1;}
+
+/* ── SECTION 2: SESSIONS ── */
+.p-sessions{
+  padding:3rem;
+  background:linear-gradient(180deg,#0E0A05,#13100A);
+  position:relative;
+}
+
+.sec-header{
+  display:flex; align-items:center; gap:1rem;
+  margin-bottom:2rem;
+}
+.sh-bar{width:6px;height:36px;background:linear-gradient(to bottom,#FF4400,#FF9500);border-radius:3px;flex-shrink:0;}
+.sh-txt{}
+.sh-en{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.35em;color:#FF9500;opacity:0.65;text-transform:uppercase;margin-bottom:0.2rem;}
+.sh-cn{font-size:1.8rem;font-weight:900;color:#FFF5E0;line-height:1.2;}
+
+/* Session cards */
+.session-list{display:flex;flex-direction:column;gap:1.2rem;}
+.sess-card{
+  display:flex; align-items:flex-start; gap:1.3rem;
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:18px;
+  padding:1.5rem;
+  position:relative;
+  overflow:hidden;
+}
+.sess-card::before{
+  content:'';
+  position:absolute; left:0; top:0; bottom:0;
+  width:4px;
+}
+.sc-1::before{background:linear-gradient(to bottom,#FF4400,#FF8800);}
+.sc-2::before{background:linear-gradient(to bottom,#00BBAA,#00DDCC);}
+.sc-3::before{background:linear-gradient(to bottom,#CC9900,#FFCC44);}
+
+.sess-icon{
+  width:64px; min-width:64px; height:64px;
+  border-radius:16px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.8rem; flex-shrink:0;
+}
+.si-1{background:linear-gradient(135deg,#CC2200,#FF7700);box-shadow:0 0 20px rgba(255,80,0,0.4);}
+.si-2{background:linear-gradient(135deg,#004F47,#00DDBB);box-shadow:0 0 20px rgba(0,200,180,0.35);}
+.si-3{background:linear-gradient(135deg,#5A3800,#FFB830);box-shadow:0 0 20px rgba(255,180,48,0.35);}
+
+.sess-body{}
+.s-tag{font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.25em;color:#FF9500;opacity:0.6;text-transform:uppercase;margin-bottom:0.3rem;}
+.s-title{font-size:1.1rem;font-weight:900;color:#FFF5E0;line-height:1.4;margin-bottom:0.6rem;}
+.s-pts{list-style:none;display:flex;flex-direction:column;gap:0.38rem;}
+.s-pts li{display:flex;align-items:flex-start;gap:0.5rem;font-size:0.8rem;color:rgba(255,245,224,0.6);line-height:1.65;}
+.s-pts li::before{content:'▸';color:#FF9500;font-size:0.6rem;margin-top:0.22rem;flex-shrink:0;}
+
+/* ── SECTION 3: OPENCLAW FEATURE ── */
+.p-oc{
+  margin:0 3rem;
+  background:linear-gradient(135deg,rgba(255,149,0,0.08),rgba(0,221,187,0.04));
+  border:1px solid rgba(255,149,0,0.18);
+  border-radius:24px;
+  padding:2.5rem 2rem;
+  text-align:center;
+  position:relative; overflow:hidden;
+}
+.p-oc::before{
+  content:'';
+  position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(255,149,0,0.1) 0%,transparent 70%);
+}
+.oc-logo-p{
+  width:80px;height:80px;
+  background:linear-gradient(135deg,#FF3300,#FF9500);
+  border-radius:22px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.4rem;margin:0 auto 1rem;
+  box-shadow:0 0 50px rgba(255,80,0,0.5);
+}
+.oc-name-p{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.1em;color:#FFCC44;margin-bottom:0.6rem;}
+.oc-sub-p{font-size:0.85rem;color:rgba(255,245,224,0.55);line-height:1.8;max-width:450px;margin:0 auto;}
+.oc-why-row{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:0.8rem; margin-top:1.8rem; text-align:left;
+}
+.ow-item{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:14px; padding:1.1rem;
+}
+.owi{font-size:1.3rem;margin-bottom:0.4rem;}
+.owt{font-size:0.85rem;font-weight:700;color:#FFF5E0;margin-bottom:0.25rem;}
+.owd{font-size:0.73rem;color:rgba(255,245,224,0.5);line-height:1.6;}
+
+/* ── SECTION 4: AWARD ── */
+.p-award{
+  padding:3rem;
+  text-align:center;
+  background:#0E0A05;
+}
+.award-title{font-size:1.5rem;font-weight:900;color:#FFF5E0;margin:1rem 0 0.6rem;}
+.award-sub{font-size:0.82rem;color:rgba(255,245,224,0.5);line-height:1.75;max-width:420px;margin:0 auto;}
+.award-pill{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  background:linear-gradient(135deg,rgba(255,200,68,0.12),rgba(255,100,0,0.08));
+  border:1px solid rgba(255,200,68,0.28);
+  border-radius:100px; padding:0.55rem 1.5rem;
+  font-size:0.85rem; font-weight:700; color:#FFCC44;
+  margin-top:1.2rem;
+}
+
+/* ── SECTION 5: PARTNERS ── */
+.p-partners{
+  padding:0 3rem 3rem;
+  background:#0E0A05;
+}
+.org-block{
+  background:linear-gradient(135deg,rgba(255,149,0,0.1),rgba(255,80,0,0.06));
+  border:1px solid rgba(255,149,0,0.22);
+  border-radius:16px;
+  padding:1.4rem 1.5rem;
+  margin-bottom:1.5rem;
+  display:flex; align-items:center; gap:1.2rem;
+}
+.ob-icon{font-size:1.8rem;}
+.ob-label{font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.25em;color:#FF9500;opacity:0.6;text-transform:uppercase;margin-bottom:0.2rem;}
+.ob-name{font-size:1.05rem;font-weight:700;color:#FFF5E0;}
+
+.cc-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.3em;color:rgba(255,200,68,0.5);text-transform:uppercase;margin-bottom:1rem;}
+.cc-grid{
+  display:flex; flex-wrap:wrap; gap:0.6rem;
+}
+.cc-chip{
+  display:flex;align-items:center;gap:0.4rem;
+  background:rgba(255,245,224,0.04);
+  border:1px solid rgba(255,245,224,0.1);
+  border-radius:8px;
+  padding:0.48rem 0.95rem;
+  font-size:0.8rem;
+  color:#FFE8B8;
+}
+.cc-dot{width:5px;height:5px;border-radius:50%;background:#FF9500;flex-shrink:0;}
+
+/* ── SECTION 6: BOTTOM ── */
+.p-bottom{
+  background:linear-gradient(180deg,#0E0A05,#080602);
+  padding:2.5rem 3rem;
+  display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid rgba(255,149,0,0.1);
+}
+.pb-left{}
+.pb-opc{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:0.08em;color:rgba(255,200,68,0.85);line-height:1;}
+.pb-sub{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.22em;color:rgba(255,245,224,0.3);margin-top:0.3rem;}
+.pb-right{text-align:right;}
+.pb-date{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#FFF5E0;letter-spacing:0.06em;}
+.pb-time{font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.15em;color:rgba(255,200,68,0.6);margin-top:0.15rem;}
+.pb-loc{font-size:0.78rem;color:rgba(255,245,224,0.4);margin-top:0.3rem;}
+
+/* ── STRIPE BOTTOM ── */
+.stripe-bottom{
+  width:100%;
+  height:12px;
+  background:repeating-linear-gradient(
+    -45deg,
+    #FF4400 0px, #FF4400 12px,
+    #FF9500 12px, #FF9500 24px,
+    #FFCC44 24px, #FFCC44 36px
+  );
+}
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <!-- ═══ HERO ═══ -->
+  <div class="p-hero">
+    <div class="stripe-top"></div>
+    <div class="geo-bg"></div>
+    <div class="deco-num">01</div>
+
+    <div class="hero-inner">
+      <div class="hero-tag-row">
+        <span class="h-tag">🦞 &nbsp;青岛首届 · INAUGURAL</span>
+        <div class="h-tag-line"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;color:rgba(255,200,68,0.5);">OPC · 2026</span>
+      </div>
+
+      <div class="lobster-mega">🦞</div>
+
+      <div class="poster-title-en">LOBSTER</div>
+
+      <div class="title-divider">
+        <div class="td-line"></div>
+        <div class="td-cn">跃迁岛龙虾市集</div>
+        <div class="td-line r"></div>
+      </div>
+
+      <div class="info-block">
+        <div class="ib-cell">
+          <span class="ib-icon">📅</span>
+          <div class="ib-text">
+            <div class="ib-label">DATE</div>
+            <div class="ib-val">3月25日（拟）</div>
+            <div class="ib-sub">14:00 – 17:00</div>
+          </div>
+        </div>
+        <div class="ib-cell">
+          <span class="ib-icon">📍</span>
+          <div class="ib-text">
+            <div class="ib-label">LOCATION</div>
+            <div class="ib-val">数据要素产业园</div>
+            <div class="ib-sub">青岛市</div>
+          </div>
+        </div>
+        <div class="ib-cell full">
+          <span class="ib-icon">🤖</span>
+          <div class="ib-text">
+            <div class="ib-label">THEME</div>
+            <div class="ib-val">AI × 教育 × 社区共建 × 龙虾养殖</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SESSIONS ═══ -->
+  <div class="p-sessions">
+    <div class="sec-header">
+      <div class="sh-bar"></div>
+      <div class="sh-txt">
+        <div class="sh-en">AGENDA · 活动议程</div>
+        <div class="sh-cn">三大精彩环节</div>
+      </div>
+    </div>
+
+    <div class="session-list">
+
+      <div class="sess-card sc-1">
+        <div class="sess-icon si-1">🎙️</div>
+        <div class="sess-body">
+          <div class="s-tag">SESSION 01 &nbsp;·&nbsp; 14:00 – 15:30</div>
+          <div class="s-title">开场 + 行业大咖分享</div>
+          <ul class="s-pts">
+            <li>跃迁岛主理人开场：如何上岛、加入OPC社区</li>
+            <li>两位行业大咖：AI时代最近发生了什么真实变化</li>
+            <li>OpenClaw 为什么突然爆火全球开发者社区</li>
+            <li>小龙虾对普通个体究竟有什么实际用途</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sess-card sc-2">
+        <div class="sess-icon si-2">🦞</div>
+        <div class="sess-body">
+          <div class="s-tag">SESSION 02 &nbsp;·&nbsp; 15:30 – 16:15</div>
+          <div class="s-title">手把手部署小龙虾</div>
+          <ul class="s-pts">
+            <li>嘉宾现场手把手协助每位参与者完成部署</li>
+            <li>分享养虾心得体会：踩过的坑与总结的经验</li>
+            <li>如何给你的小龙虾添加专属能力</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sess-card sc-3">
+        <div class="sess-icon si-3">🏆</div>
+        <div class="sess-body">
+          <div class="s-tag">SESSION 03 &nbsp;·&nbsp; 16:15 – 17:00</div>
+          <div class="s-title">互动交流 · 资源对接 · 票选大赛</div>
+          <ul class="s-pts">
+            <li>边吃龙虾边分享：你给虾加了什么能力、想解决什么问题</li>
+            <li>下一步希望怎么升级你的虾</li>
+            <li>自由组队，找到共建伙伴，完成资源对接</li>
+            <li>🏆 现场票选「最佳龙虾养殖户」荣誉加冕</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ OPENCLAW ═══ -->
+  <div style="padding:0 0 3rem;background:#13100A;">
+    <div class="p-oc">
+      <div class="oc-logo-p">🦞</div>
+      <div class="oc-name-p">OPENCLAW</div>
+      <div class="oc-sub-p">大会焦点：它如何在数周内席卷全球开发者社区？<br>懂它的人来现场聊透这件事。</div>
+      <div class="oc-why-row">
+        <div class="ow-item"><div class="owi">⚡</div><div class="owt">爆火背后的逻辑</div><div class="owd">架构设计到生态位，核心竞争力拆解</div></div>
+        <div class="ow-item"><div class="owi">📈</div><div class="owt">AI 最近变了什么</div><div class="owd">大模型迭代加速，行业真实转变</div></div>
+        <div class="ow-item"><div class="owi">🎓</div><div class="owt">AI × 教育</div><div class="owd">落地实践与未来展望</div></div>
+        <div class="ow-item"><div class="owi">👤</div><div class="owt">对个体有什么用</div><div class="owd">普通人如何构建自己的 AI 能力</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ AWARD ═══ -->
+  <div class="p-award">
+    <div style="font-size:3rem;margin-bottom:0.5rem;">🏆</div>
+    <div class="award-title">现场票选 · 最佳龙虾养殖户</div>
+    <div class="award-sub">展示你的虾、讲出你的故事、分享你的想法<br>让现场所有人投票，决出最有创意的龙虾养殖户！</div>
+    <div class="award-pill">🦞 &nbsp;最佳养殖户 · 现场荣誉加冕</div>
+  </div>
+
+  <!-- ═══ PARTNERS ═══ -->
+  <div class="p-partners">
+    <div class="org-block">
+      <span class="ob-icon">🏢</span>
+      <div>
+        <div class="ob-label">活动主办方 · ORGANIZER</div>
+        <div class="ob-name">青岛市数据要素产业园</div>
+      </div>
+    </div>
+
+    <div class="cc-label">共创社区 · CO-CREATE COMMUNITIES</div>
+    <div class="cc-grid">
+      <div class="cc-chip"><div class="cc-dot"></div>WaytoAGI</div>
+      <div class="cc-chip"><div class="cc-dot"></div>百度飞桨星河社区</div>
+      <div class="cc-chip"><div class="cc-dot"></div>Vibe Friends</div>
+      <div class="cc-chip"><div class="cc-dot"></div>飞书</div>
+      <div class="cc-chip"><div class="cc-dot"></div>硅基流动</div>
+      <div class="cc-chip"><div class="cc-dot"></div>观猹</div>
+      <div class="cc-chip"><div class="cc-dot"></div>知潜</div>
+    </div>
+  </div>
+
+  <!-- ═══ BOTTOM ═══ -->
+  <div class="p-bottom">
+    <div class="pb-left">
+      <div class="pb-opc">OPC</div>
+      <div class="pb-sub">YUEQUAN DAO · LOBSTER FESTIVAL</div>
+    </div>
+    <div class="pb-right">
+      <div class="pb-date">MAR 25 · 2026</div>
+      <div class="pb-time">14:00 — 17:00</div>
+      <div class="pb-loc">青岛市数据要素产业园</div>
+    </div>
+  </div>
+  <div class="stripe-bottom"></div>
+
+</div>
+</body>
+</html>
